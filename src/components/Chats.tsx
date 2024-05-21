@@ -8,6 +8,12 @@ import { useAuth } from "../contexts/authContext";
 import { auth } from "../firebase";
 
 export default function Chats() {
+  const apiKey = import.meta.env.VITE_CHAT_ENGINE_KEY;
+  const projectID = import.meta.env.VITE_CHAT_ENGINE_ID;
+
+  console.log("apiKey", apiKey);
+  console.log("projectID", projectID);
+
   const didMountRef = useRef(false);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
@@ -37,7 +43,7 @@ export default function Chats() {
       axios
         .get("https://api.chatengine.io/users/me/", {
           headers: {
-            "project-id": process.env.REACT_APP_CHAT_ENGINE_KEY,
+            "project-id": projectID,
             "user-name": user.email,
             "user-secret": user.uid,
           },
@@ -57,7 +63,7 @@ export default function Chats() {
             axios
               .post("https://api.chatengine.io/users/", formdata, {
                 headers: {
-                  "private-key": process.env.REACT_APP_CHAT_ENGINE_KEY,
+                  "private-key": apiKey,
                 },
               })
               .then(() => setLoading(false))
@@ -66,7 +72,7 @@ export default function Chats() {
         });
       // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     }
-  }, [user, navigate]);
+  }, [user, navigate, apiKey, projectID]);
 
   if (!user || loading) return <div />;
 
@@ -80,7 +86,7 @@ export default function Chats() {
         </div>
       </div>
       <ChatEngine
-        projectID={process.env.REACT_APP_CHAT_ENGINE_ID ?? ""}
+        projectID={projectID ?? ""}
         userName={user.email ?? ""}
         userSecret={user.uid}
         height="calc(100vh - 66px)"

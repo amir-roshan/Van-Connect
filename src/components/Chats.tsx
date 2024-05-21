@@ -11,9 +11,6 @@ export default function Chats() {
   const apiKey = import.meta.env.VITE_CHAT_ENGINE_KEY;
   const projectID = import.meta.env.VITE_CHAT_ENGINE_ID;
 
-  console.log("apiKey", apiKey);
-  console.log("projectID", projectID);
-
   const didMountRef = useRef(false);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
@@ -79,7 +76,7 @@ export default function Chats() {
   return (
     <div className="chats-page">
       <div className="nav-bar">
-        <div className="logo-tab">Unichat</div>
+        <div className="logo-tab">Van Connect</div>
 
         <div onClick={handleLogout} className="logout-tab">
           Logout

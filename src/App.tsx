@@ -3,7 +3,7 @@ import Login from "./components/Login";
 import { AuthProvider } from "./contexts/AuthProvider";
 import Chats from "./components/Chats";
 
-function App() {
+const App = () => {
   return (
     <div style={{ fontFamily: "Avenir" }}>
       <Router>
@@ -16,6 +16,6 @@ function App() {
       </Router>
     </div>
   );
-}
+};
 
 export default App;

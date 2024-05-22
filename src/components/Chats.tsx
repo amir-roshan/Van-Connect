@@ -2,14 +2,12 @@ import { useRef, useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ChatEngine } from "react-chat-engine";
-
 import { useAuth } from "../contexts/authContext";
-
 import { auth } from "../firebase";
 
-export default function Chats() {
-  const apiKey = import.meta.env.VITE_CHAT_ENGINE_KEY;
-  const projectID = import.meta.env.VITE_CHAT_ENGINE_ID;
+const Chats: React.FC = () => {
+  const apiKey = import.meta.env.VITE_CHAT_ENGINE_KEY as string;
+  const projectID = import.meta.env.VITE_CHAT_ENGINE_ID as string;
 
   const didMountRef = useRef(false);
   const [loading, setLoading] = useState(true);
@@ -21,7 +19,7 @@ export default function Chats() {
     navigate("/");
   }
 
-  async function getFile(url: string) {
+  async function getFile(url: string): Promise<File> {
     const response = await fetch(url);
     const data = await response.blob();
     return new File([data], "test.jpg", { type: "image/jpeg" });
@@ -45,9 +43,7 @@ export default function Chats() {
             "user-secret": user.uid,
           },
         })
-
         .then(() => setLoading(false))
-
         .catch(() => {
           const formdata = new FormData();
           formdata.append("email", user.email ?? "");
@@ -64,7 +60,9 @@ export default function Chats() {
                 },
               })
               .then(() => setLoading(false))
-              .catch((e) => console.log("e", e.response));
+              .catch((e) => {
+                console.log("e", e.response);
+              });
           });
         });
       // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -77,17 +75,18 @@ export default function Chats() {
     <div className="chats-page">
       <div className="nav-bar">
         <div className="logo-tab">Van Connect</div>
-
         <div onClick={handleLogout} className="logout-tab">
           Logout
         </div>
       </div>
       <ChatEngine
-        projectID={projectID ?? ""}
+        projectID={projectID}
         userName={user.email ?? ""}
         userSecret={user.uid}
         height="calc(100vh - 66px)"
       />
     </div>
   );
-}
+};
+
+export default Chats;
